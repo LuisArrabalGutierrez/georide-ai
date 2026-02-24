@@ -1,25 +1,26 @@
 import { Router } from 'express';
-import { supabase } from '../config/config.ts';
-import { analyzeRidePrompt, geocodeDestination, getCityContext } from '../services/ai.services.ts';
 import { ridesQueue } from '../workers/ride.worker.ts';
+
+import { AiService, geocodeDestination, getCityContext } from '../services/ai.services.ts';
+import { GroqStrategy } from '../strategies/ai/GroqStrategy.ts';
+
+import { profileRepository } from '../repositories/ProfileRepository.ts';
 
 export const routes = Router();
 
-// ==========================================
-// 🧠 RUTA: MODO IA (Solo analiza, NO reserva)
-// ==========================================
+const aiService = new AiService(new GroqStrategy());
+
 routes.post('/api/ai-ride', async (req, res) => {
-  const { prompt, currentLocation, is_mock } = req.body; // Ya no pedimos rider_id aquí
+  const { prompt, currentLocation, is_mock } = req.body;
   
   try {
     const cityName = await getCityContext(currentLocation.lat, currentLocation.lng);
     const aiDecision = is_mock 
       ? { car_type: 'Economy', destination_name: 'Simulación' }
-      : await analyzeRidePrompt(prompt, cityName);
+      : await aiService.analyzeRidePrompt(prompt, cityName);
 
     const dropoff = await geocodeDestination(aiDecision.destination_name, currentLocation.lat, currentLocation.lng);
 
-    // 🔥 EL CAMBIO: Ya no añadimos a ridesQueue. Solo devolvemos la respuesta al Frontend.
     res.status(200).json({ 
       decision: { 
         car_type: aiDecision.car_type, 
@@ -32,12 +33,8 @@ routes.post('/api/ai-ride', async (req, res) => {
   }
 });
 
-// ==========================================
-// 🕹️ RUTA: RESERVAR VIAJE (La usaremos tras confirmar)
-// ==========================================
 routes.post('/api/rides', async (req, res) => {
   try {
-    // Esto lo usaremos tanto para el modo manual como para cuando el usuario confirme el de la IA
     await ridesQueue.add('create-ride', req.body);
     res.status(202).json({ message: 'Viaje encolado' });
   } catch (error: any) {
@@ -45,9 +42,15 @@ routes.post('/api/rides', async (req, res) => {
   }
 });
 
-// Endpoint del Perfil
+// ==========================================
+//  RUTA: PERFIL (Usando el Patrón Repository)
+// ==========================================
 routes.get('/api/profile/:userId', async (req, res) => {
-  const { data, error } = await supabase.from('profiles').eq('id', req.params.userId).single();
-  if (error) return res.status(404).json({ error: 'Perfil no encontrado' });
-  res.json(data);
+  try {
+    //  La ruta ya no sabe qué es Supabase, solo le pide datos al repositorio
+    const profile = await profileRepository.getById(req.params.userId);
+    res.json(profile);
+  } catch (error: any) {
+    res.status(404).json({ error: 'Perfil no encontrado' });
+  }
 });
