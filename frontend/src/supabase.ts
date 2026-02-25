@@ -5,7 +5,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Comprueba si las variables existen antes de intentar conectar
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error("🚨 Faltan las variables VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY en el archivo .env del frontend.");
+  throw new Error("🚨 Faltan las variables en el archivo .env del frontend.");
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
