@@ -14,8 +14,22 @@ export const supabase = createClient(
 export const groq = new Groq({ apiKey: process.env.GROQ_KEY });
 
 // 3. Conexión a Redis para el sistema de colas
+// Si existe la variable REDIS_URL (en Render), la analizamos. Si no, usamos configuración local.
+const redisUrl = process.env.REDIS_URL;
+let redisHost = '127.0.0.1';
+let redisPort = 6379;
+let redisPassword = undefined;
+
+if (redisUrl) {
+  const parsedUrl = new URL(redisUrl);
+  redisHost = parsedUrl.hostname;
+  redisPort = Number(parsedUrl.port) || 6379;
+  redisPassword = parsedUrl.password || undefined;
+}
+
 export const redisOptions = {
-  host: '127.0.0.1',
-  port: 6379,
+  host: redisHost,
+  port: redisPort,
+  password: redisPassword,
   maxRetriesPerRequest: null,
 };
