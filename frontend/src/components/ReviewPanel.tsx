@@ -1,4 +1,4 @@
-import { FaMapMarkerAlt, FaCarSide, FaTimes, FaCheck } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaCarSide } from 'react-icons/fa';
 import type { LocationData, CarType } from '../types';
 
 interface Props {

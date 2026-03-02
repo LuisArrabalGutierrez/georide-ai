@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { LocationData } from '../types'; // Asegúrate de que la ruta sea correcta
+import type { LocationData } from '../types'; 
 
 export function useAddressSearch(query: string, currentLat?: number, currentLng?: number) {
   const [results, setResults] = useState<LocationData[]>([]);
@@ -17,10 +17,10 @@ export function useAddressSearch(query: string, currentLat?: number, currentLng?
     const timeoutId = setTimeout(async () => {
       setLoading(true);
       try {
-        // 🔥 Migramos a Photon: Sin problemas de CORS y con búsqueda difusa
+        //  Photon
         let url = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5`;
 
-        // 🎯 Si tenemos tu ubicación (ej: Granada), priorizamos los resultados cercanos
+        // Si tenemos tu ubicación (ej: Granada), priorizamos los resultados cercanos
         if (currentLat && currentLng) {
           url += `&lat=${currentLat}&lon=${currentLng}`;
         }

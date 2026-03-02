@@ -36,7 +36,7 @@ export default function Home({ session }: { session: Session }) {
 
   const isSplitScreen = status === 'REVIEW' || status === 'PROCESSING' || status === 'CONFIRMED';
 
-  // 🔥 Lógica de API Restaurada Completa
+  // Lógica de API Restaurada 
   const handleAiRequest = async () => {
     if (!aiPrompt.trim()) return;
     setStatus('ANALYZING'); 

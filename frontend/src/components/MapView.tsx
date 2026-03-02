@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Polyline, useMap, AttributionControl } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import * as L from 'leaflet';
 import { useEffect, useState } from 'react';
@@ -19,7 +19,7 @@ const carIcon = new L.Icon({
   className: 'transition-transform duration-1000'
 });
 
-// 🔥 COMPONENTE ACTUALIZADO: Arregla el bug de los "cachos grises"
+// COMPONENTE ACTUALIZADO: Arregla el bug de los "cachos grises"
 function MapResizer() {
   const map = useMap();
   
