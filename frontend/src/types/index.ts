@@ -8,6 +8,7 @@ export interface LocationData {
   name: string;
   lat: number;
   lng: number;
+  address?: string;
 }
 
 export interface PlaceResult {
