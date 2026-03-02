@@ -41,7 +41,7 @@ export default function Home({ session }: { session: Session }) {
     if (!aiPrompt.trim()) return;
     setStatus('ANALYZING'); 
     try {
-      const response = await fetch('http://localhost:3000/api/ai-ride', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}/api/ai-ride', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: aiPrompt, currentLocation: pickup, is_mock: false })
@@ -61,7 +61,7 @@ export default function Home({ session }: { session: Session }) {
   const handleConfirmRide = async () => {
     setStatus('PROCESSING'); 
     try {
-      const response = await fetch('http://localhost:3000/api/rides', {
+      const response = await fetch('${import.meta.env.VITE_API_URL}/api/rides', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
