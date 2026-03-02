@@ -5,7 +5,16 @@ import { startTrafficSimulator } from './workers/ride.worker.js';
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: [
+    'http://localhost:5173', // Permite tu entorno de desarrollo local
+    'https://tu-app-georide.vercel.app' 
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true 
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(routes);
 
@@ -13,8 +22,4 @@ app.use(routes);
 startTrafficSimulator();
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor Enterprise iniciado en http://localhost:${PORT}`);
-  console.log(`🧠 Inteligencia Artificial conectada.`);
-  console.log(`🚕 Simulador de tráfico activo.`);
-});
+app.listen(PORT, () => console.log(`Servidor en el puerto ${PORT}`));
