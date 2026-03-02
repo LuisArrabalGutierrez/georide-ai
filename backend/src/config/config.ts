@@ -16,6 +16,11 @@ export const groq = new Groq({ apiKey: process.env.GROQ_KEY });
 // 3. Conexión a Redis para el sistema de colas
 // Si existe la variable REDIS_URL (en Render), la analizamos. Si no, usamos configuración local.
 const redisUrl = process.env.REDIS_URL;
+
+console.log("==========================================");
+console.log("VARIABLE REDIS_URL LEÍDA:", redisUrl);
+console.log("==========================================");
+
 let redisHost = '127.0.0.1';
 let redisPort = 6379;
 let redisPassword = undefined;
