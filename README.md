@@ -1,6 +1,3 @@
-Here is the translated and expanded version of your README, written entirely in professional, industry-standard English. I have stripped away any "student" vibes and structured it exactly how a Senior Backend Engineer or Tech Lead would present a portfolio project to impress top-tier companies.
-
-I've also added a brand new section at the end detailing the advanced Design Patterns we just implemented, which is the absolute crown jewel of this architecture.
 
 🧠 System Design Decisions (Deep Dive)
 Why is Redis used in /api/rides but not in /api/ai-ride?
